@@ -12,14 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MarketConsumer {
 
-    // O RedisTemplate que o Spring cria automaticamente pra gente
     private final ReactiveRedisTemplate<String, Quote> redisTemplate;
 
     @KafkaListener(topics = "market-prices", groupId = "market-group")
     public void consume(Quote quote) {
         log.info("Consumido do Kafka: {}", quote);
 
-        // Salvando no Redis com a chave 'price:BTC-USD'
         redisTemplate.opsForValue()
                 .set("price:" + quote.symbol(), quote)
                 .subscribe(success -> log.info("Último preço do {} salvo no Redis!", quote.symbol()));

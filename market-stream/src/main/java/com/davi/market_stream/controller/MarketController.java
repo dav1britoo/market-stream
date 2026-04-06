@@ -16,7 +16,6 @@ public class MarketController {
 
     @GetMapping("/price/{symbol}")
     public Mono<Quote> getLatestPrice(@PathVariable String symbol) {
-        // Buscamos a chave que criamos no Consumidor (price:BTC-USD)
         return redisTemplate.opsForValue().get("price:" + symbol);
     }
 }

@@ -20,7 +20,6 @@ public class MarketProducer {
     private final KafkaTemplate<String, Quote> kafkaTemplate;
     private final Random random = new Random();
 
-    // Simula o envio de um preço a cada 1 segundo
     @Scheduled(fixedRate = 1000)
     public void generateQuotes() {
         BigDecimal basePrice = new BigDecimal("65000.00");
@@ -31,7 +30,6 @@ public class MarketProducer {
 
         log.info("Enviando para o Kafka: {}", quote);
 
-        // O primeiro parâmetro é o nome do tópico, o segundo a chave e o terceiro o valor
         kafkaTemplate.send("market-prices", quote.symbol(), quote);
     }
 }
